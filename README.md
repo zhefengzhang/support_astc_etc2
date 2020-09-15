@@ -4,6 +4,8 @@
 配置自定义引擎
 ![img](http://www.codefriends.cn:3389/20200915002.png) 
 
+修改引擎安装目录的 jsb-adapter ，本地相对路径为（参考 mac 上的路径）：Creator/2.1.3/CocosCreator.app/Contents/Resources/builtin/jsb-adapter
+
 构建时，需要先设置 etc2 纹理压缩。
 ![img](http://www.codefriends.cn:3389/20200915001.png) 
 
