@@ -67,7 +67,8 @@ export default class Texture2D extends Texture {
         this._format = options.format;
         this._compressed = 
           (this._format >= enums.TEXTURE_FMT_RGB_DXT1 && this._format <= enums.TEXTURE_FMT_RGBA_PVRTC_4BPPV1) || 
-          (this._format >= enums.TEXTURE_FMT_RGB_ETC2 && this._format <= enums.TEXTURE_FMT_RGBA_ETC2)
+          (this._format >= enums.TEXTURE_FMT_RGB_ETC2 && this._format <= enums.TEXTURE_FMT_RGBA_ETC2) ||
+          (this._format >= enums.TEXTURE_FMT_RGBA_ASTC_4x4 && this._format <= enums.TEXTURE_FMT_RGBA_ASTC_12x12)
         ;
       }
 

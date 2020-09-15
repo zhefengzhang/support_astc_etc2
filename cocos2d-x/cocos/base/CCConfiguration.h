@@ -98,13 +98,32 @@ public:
      */
     bool supportsPVRTC() const;
 
-    /** Whether or not ETC Texture Compressed is supported.
+    /** Whether or not ETC1 Texture Compressed is supported.
      *
      *
      * @return Is true if supports ETC Texture Compressed.
      */
     bool supportsETC() const;
-
+    
+    /**
+     * Check whether or not ETC2 Texture Compressed is supported.
+     */
+    bool checkForEtc2() const;
+    
+    /** Whether or not ETC2 Texture Compressed is supported.
+     *
+     *
+     * @return Is true if supports ETC2 Texture Compressed.
+     */
+    bool supportsETC2() const;
+    
+    /** Whether or not ASTC Texture Compressed is supported.
+     *
+     *
+     * @return Is true if supports ASTC Texture Compressed.
+     */
+    bool supportsASTC() const;
+    
     /** Whether or not S3TC Texture Compressed is supported.
      *
      * @return Is true if supports S3TC Texture Compressed.
@@ -239,6 +258,8 @@ protected:
     GLint           _maxModelviewStackDepth;
     bool            _supportsPVRTC;
     bool            _supportsETC1;
+    bool            _supportsETC2;
+    bool            _supportsASTC;
     bool            _supportsS3TC;
     bool            _supportsATITC;
     bool            _supportsNPOT;

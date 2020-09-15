@@ -30,6 +30,7 @@
 #include "cocos/scripting/js-bindings/manual/jsb_opengl_utils.hpp"
 #include "platform/CCGL.h"
 #include "cocos/base/CCGLUtils.h"
+#include "cocos/base/CCConfiguration.h"
 
 #include <regex>
 
@@ -3521,7 +3522,8 @@ static bool JSB_glGetAttachedShaders(se::State& s) {
             ++index;
         }
     }
-
+    
+    
     s.rval().setObject(jsobj.get());
     CC_SAFE_DELETE_ARRAY(buffer);
     return true;
@@ -3566,7 +3568,12 @@ static bool JSB_glGetSupportedExtensions(se::State& s) {
             ++i;
         }
     }
-
+    if (Configuration::getInstance()->supportsETC2()) {
+        jsobj->setArrayElement(element++, se::Value("WEBGL_compressed_texture_etc"));
+    }
+    if (Configuration::getInstance()->supportsASTC()) {
+            jsobj->setArrayElement(element++, se::Value("WEBGL_compressed_texture_astc"));
+        }
     s.rval().setObject(jsobj.get());
     CC_SAFE_DELETE_ARRAY(copy);
     return true;

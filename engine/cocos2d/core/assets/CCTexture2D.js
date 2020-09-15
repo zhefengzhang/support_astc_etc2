@@ -350,7 +350,7 @@ var Texture2D = cc.Class({
         _FilterIndex: FilterIndex,
 
         // predefined most common extnames
-        extnames: ['.png', '.jpg', '.jpeg', '.bmp', '.webp', '.pvr', '.pkm'],
+        extnames: ['.png', '.jpg', '.jpeg', '.bmp', '.webp', '.pvr', '.pkm', '.astc'],
     },
 
     ctor () {
@@ -865,6 +865,9 @@ var Texture2D = cc.Class({
                     let tmpFormat = extFormat[1] ? parseInt(extFormat[1]) : this._format;
 
                     // check whether or not support compressed texture
+                    // if (tmpExt === '.astc' && !device.ext('WEBGL_compressed_texture_astc')) {
+                    //     continue;
+                    // }
                     if ( tmpExt === '.pvr' && !device.ext('WEBGL_compressed_texture_pvrtc')) {
                         continue;
                     }

@@ -78,7 +78,10 @@ extern "C"
 #endif // CC_USE_JPEG
 
 #include "base/etc1.h"
+#include "base/etc2.h"
 }
+
+#include "base/astc.h"
 
 #if CC_USE_WEBP
 #include "webp/decode.h"
@@ -129,10 +132,35 @@ namespace
         PixelFormatInfoMapValue(Image::PixelFormat::PVRTC4A, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, true)),
 #endif
 
+#ifdef GL_COMPRESSED_RGBA_ASTC_4x4_KHR
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_4x4, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_4x4_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_5x4, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_5x4_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_5x5, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_5x5_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_6x5, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_6x5_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_6x6, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_6x6_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_8x5, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_8x5_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_8x6, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_8x6_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_8x8, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_8x8_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_10x5, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_10x5_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_10x6, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_10x6_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_10x8, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_10x8_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_10x10, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_10x10_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_12x10, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_12x10_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Image::PixelFormat::ASTC_RGBA_12x12, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_ASTC_12x12_KHR, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+#endif
+
 #ifdef GL_ETC1_RGB8_OES
         PixelFormatInfoMapValue(Image::PixelFormat::ETC, Image::PixelFormatInfo(GL_ETC1_RGB8_OES, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, false)),
 #endif
+        
+#ifdef GL_COMPRESSED_RGB8_ETC2
+        PixelFormatInfoMapValue(Image::PixelFormat::ETC2_RGB, Image::PixelFormatInfo(GL_COMPRESSED_RGB8_ETC2, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, false)),
+#endif
 
+#ifdef GL_COMPRESSED_RGBA8_ETC2_EAC
+        PixelFormatInfoMapValue(Image::PixelFormat::ETC2_RGBA, Image::PixelFormatInfo(GL_COMPRESSED_RGBA8_ETC2_EAC, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+#endif
+        
 #ifdef GL_COMPRESSED_RGBA_S3TC_DXT1_EXT
         PixelFormatInfoMapValue(Image::PixelFormat::S3TC_DXT1, Image::PixelFormatInfo(GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, false)),
 #endif
@@ -584,6 +612,12 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
         case Format::ETC:
             ret = initWithETCData(unpackedData, unpackedLen);
             break;
+        case Format::ETC2:
+            ret = initWithETC2Data(unpackedData, unpackedLen);
+        break;
+        case Format::ASTC:
+            ret = initWithASTCData(unpackedData, unpackedLen);
+            break;
         case Format::S3TC:
             ret = initWithS3TCData(unpackedData, unpackedLen);
             break;
@@ -630,6 +664,16 @@ bool Image::isPng(const unsigned char * data, ssize_t dataLen)
 bool Image::isEtc(const unsigned char * data, ssize_t dataLen)
 {
     return etc1_pkm_is_valid((etc1_byte*)data) ? true : false;
+}
+
+bool Image::isEtc2(const unsigned char * data, ssize_t dataLen)
+{
+    return etc2_pkm_is_valid((etc2_byte*)data) ? true : false;
+}
+
+bool Image::isASTC(const unsigned char * data, ssize_t dataLen)
+{
+    return astcIsValid((astc_byte*)data) ? true : false;
 }
 
 bool Image::isS3TC(const unsigned char * data, ssize_t /*dataLen*/)
@@ -722,6 +766,14 @@ Image::Format Image::detectFormat(const unsigned char * data, ssize_t dataLen)
     {
         return Format::ETC;
     }
+    else if (isEtc2(data, dataLen))
+    {
+        return Format::ETC2;
+    }
+    else if (isASTC(data, dataLen))
+    {
+        return Format::ASTC;
+    }
     else if (isS3TC(data, dataLen))
     {
         return Format::S3TC;
@@ -729,6 +781,52 @@ Image::Format Image::detectFormat(const unsigned char * data, ssize_t dataLen)
     else
     {
         return Format::UNKNOWN;
+    }
+}
+
+Image::PixelFormat Image::getASTCFormat(const unsigned char * pHeader) const
+{
+    int xdim = pHeader[ASTC_HEADER_MAGIC];
+    int ydim = pHeader[ASTC_HEADER_MAGIC + 1];
+
+    if (xdim == 4) {
+        return Image::PixelFormat::ASTC_RGBA_4x4;
+    } else if (xdim == 5) {
+        if (ydim == 4) {
+            return Image::PixelFormat::ASTC_RGBA_5x4;
+        } else {
+            return Image::PixelFormat::ASTC_RGBA_5x5;
+        }
+    } else if (xdim == 6) {
+        if (ydim == 5) {
+            return Image::PixelFormat::ASTC_RGBA_6x5;
+        } else {
+            return Image::PixelFormat::ASTC_RGBA_6x6;
+        }
+    } else if (xdim == 8) {
+        if (ydim == 5) {
+            return Image::PixelFormat::ASTC_RGBA_8x5;
+        } else if (ydim == 6) {
+            return Image::PixelFormat::ASTC_RGBA_8x6;
+        } else {
+            return Image::PixelFormat::ASTC_RGBA_8x8;
+        }
+    } else if (xdim == 10) {
+        if (ydim == 5) {
+            return Image::PixelFormat::ASTC_RGBA_10x5;
+        } else if (ydim == 6) {
+            return Image::PixelFormat::ASTC_RGBA_10x6;
+        } else if (ydim == 8) {
+            return Image::PixelFormat::ASTC_RGBA_10x8;
+        } else {
+            return Image::PixelFormat::ASTC_RGBA_10x10;
+        }
+    } else {
+        if (ydim == 10) {
+            return Image::PixelFormat::ASTC_RGBA_12x10;
+        } else {
+            return Image::PixelFormat::ASTC_RGBA_12x12;
+        }
     }
 }
 
@@ -1350,6 +1448,11 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
 
     assert(Configuration::getInstance()->supportsPVRTC());
 
+    if (Configuration::getInstance()->supportsPVRTC() == false) {
+        CCLOG("initWithPVRv2Data: ERROR: Unsupported PVR Compress texture on this device");
+        return false;
+    }
+    
     //Move by size of header
     _dataLen = dataLen - sizeof(PVRv2TexHeader);
     _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
@@ -1479,7 +1582,11 @@ bool Image::initWithPVRv3Data(const unsigned char * data, ssize_t dataLen)
     int dataOffset = 0, dataSize = 0;
     int blockSize = 0, widthBlocks = 0, heightBlocks = 0;
 
-    assert(Configuration::getInstance()->supportsPVRTC());
+    assert(true);
+    if (Configuration::getInstance()->supportsPVRTC() == false) {
+        CCLOG("initWithPVRv3Data: ERROR: Unsupported PVR Compress texture on this device");
+        return false;
+    }
 
     _dataLen = dataLen - (sizeof(PVRv3TexHeader) + header->metadataLength);
     _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
@@ -1570,7 +1677,10 @@ bool Image::initWithETCData(const unsigned char * data, ssize_t dataLen)
     }
 
     assert(Configuration::getInstance()->supportsETC());
-
+    if (Configuration::getInstance()->supportsETC() == false) {
+        CCLOG("initWithETCData: ERROR: Unsupported ETC Compress texture on this device");
+        return false;
+    }
     //old opengl version has no define for GL_ETC1_RGB8_OES, add macro to make compiler happy.
 #ifdef GL_ETC1_RGB8_OES
     _renderFormat = Image::PixelFormat::ETC;
@@ -1581,6 +1691,80 @@ bool Image::initWithETCData(const unsigned char * data, ssize_t dataLen)
 #endif
 
     return false;
+}
+
+bool Image::initWithASTCData(const unsigned char * data, ssize_t dataLen)
+{
+    const astc_byte* header = static_cast<const astc_byte*>(data);
+
+    //check the data
+    if (!astcIsValid(header))
+    {
+        return false;
+    }
+
+    _width = astcGetWidth(header);
+    _height = astcGetHeight(header);
+
+    if (0 == _width || 0 == _height)
+    {
+        return false;
+    }
+    
+    assert(Configuration::getInstance()->supportsASTC());
+    if (Configuration::getInstance()->supportsASTC() == false) {
+        CCLOG("initWithASTCData: ERROR: Unsupported ASTC Compress texture on this device");
+        return false;
+    }
+
+    _renderFormat = getASTCFormat(header);
+
+    _dataLen = dataLen - ASTC_HEADER_SIZE;
+    _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
+    memcpy(_data, static_cast<const unsigned char*>(data) + ASTC_HEADER_SIZE, _dataLen);
+    if (_data == nullptr) {
+        CCLOG("initWithASTCData: ERROR: Image _data is null!");
+        return false;
+    }
+
+    return true;
+}
+
+bool Image::initWithETC2Data(const unsigned char * data, ssize_t dataLen)
+{
+    const etc2_byte* header = static_cast<const etc2_byte*>(data);
+
+    //check the data
+    if (! etc2_pkm_is_valid(header))
+    {
+        return  false;
+    }
+
+    _width = etc2_pkm_get_width(header);
+    _height = etc2_pkm_get_height(header);
+
+    if (0 == _width || 0 == _height)
+    {
+        return false;
+    }
+
+    assert(Configuration::getInstance()->supportsETC2());
+
+    etc2_uint32 format = etc2_pkm_get_format(header);
+    if (format == ETC2_RGB_NO_MIPMAPS)
+    {
+        _renderFormat = Image::PixelFormat::ETC2_RGB;
+    }
+    else
+    {
+        _renderFormat = Image::PixelFormat::ETC2_RGBA;
+    }
+
+    _dataLen = dataLen - ETC2_PKM_HEADER_SIZE;
+    _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
+    memcpy(_data, static_cast<const unsigned char*>(data) + ETC2_PKM_HEADER_SIZE, _dataLen);
+
+    return true;
 }
 
 bool Image::initWithTGAData(tImageTGA* tgaData)
@@ -1689,7 +1873,11 @@ bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)
     int height = _height;
 
     assert(Configuration::getInstance()->supportsS3TC());
-
+    if (Configuration::getInstance()->supportsS3TC() == false) {
+        CCLOG("initWithS3TCData: ERROR: Unsupported S3TC Compress texture on this device");
+        return false;
+    }
+    
     _dataLen = dataLen - sizeof(S3TCTexHeader);
     _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
     memcpy((void *)_data,(void *)pixelData , _dataLen);

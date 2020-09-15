@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include "base/CCConfiguration.h"
 #include "platform/CCFileUtils.h"
 #include "base/CCLog.h"
+#include "base/etc2.h"
 
 NS_CC_BEGIN
 
@@ -41,6 +42,8 @@ Configuration::Configuration()
 , _maxModelviewStackDepth(0)
 , _supportsPVRTC(false)
 , _supportsETC1(false)
+, _supportsETC2(false)
+, _supportsASTC(false)
 , _supportsS3TC(false)
 , _supportsATITC(false)
 , _supportsNPOT(false)
@@ -109,7 +112,10 @@ void Configuration::gatherGPUInfo()
     _valueDict["gl.vendor"] = Value((const char*)glGetString(GL_VENDOR));
     _valueDict["gl.renderer"] = Value((const char*)glGetString(GL_RENDERER));
     _valueDict["gl.version"] = Value((const char*)glGetString(GL_VERSION));
-
+    
+    _supportsETC2 = checkForEtc2();
+    _valueDict["gl.supports_ETC2"] = Value(_supportsETC2);
+    
     _glExtensions = (char *)glGetString(GL_EXTENSIONS);
 
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_maxTextureSize);
@@ -135,6 +141,9 @@ void Configuration::gatherGPUInfo()
     _supportsPVRTC = checkForGLExtension("GL_IMG_texture_compression_pvrtc");
     _valueDict["gl.supports_PVRTC"] = Value(_supportsPVRTC);
 
+    _supportsASTC = checkForGLExtension("texture_compression_astc");
+    _valueDict["gl.supports_ASTC"] = Value(_supportsASTC);
+
     _supportsNPOT = true;
     _valueDict["gl.supports_NPOT"] = Value(_supportsNPOT);
 
@@ -144,7 +153,7 @@ void Configuration::gatherGPUInfo()
     _supportsDiscardFramebuffer = checkForGLExtension("GL_EXT_discard_framebuffer");
     _valueDict["gl.supports_discard_framebuffer"] = Value(_supportsDiscardFramebuffer);
 
-    _supportsShareableVAO = checkForGLExtension("vertex_array_object");
+    _supportsShareableVAO = checkForGLExtension("GL_OES_vertex_array_object");
     _valueDict["gl.supports_vertex_array_object"] = Value(_supportsShareableVAO);
 
     _supportsOESMapBuffer = checkForGLExtension("GL_OES_mapbuffer");
@@ -209,6 +218,11 @@ bool Configuration::supportsPVRTC() const
     return _supportsPVRTC;
 }
 
+bool Configuration::supportsASTC() const
+{
+    return _supportsASTC;
+}
+
 bool Configuration::supportsETC() const
 {
     //GL_ETC1_RGB8_OES is not defined in old opengl version
@@ -218,6 +232,30 @@ bool Configuration::supportsETC() const
     return false;
 #endif
 }
+
+bool Configuration::checkForEtc2() const
+{
+    GLint numFormats = 0;
+    glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS, &numFormats);
+    GLint* formats = new GLint[numFormats];
+    glGetIntegerv(GL_COMPRESSED_TEXTURE_FORMATS, formats);
+
+    int supportNum = 0;
+    for (GLint i = 0; i < numFormats; ++i)
+    {
+        if (formats[i] == GL_COMPRESSED_RGB8_ETC2 || formats[i] == GL_COMPRESSED_RGBA8_ETC2_EAC)
+        supportNum++;
+    }
+    delete [] formats;
+
+    return supportNum >= 2;
+}
+
+bool Configuration::supportsETC2() const
+{
+    return _supportsETC2;
+}
+
 
 bool Configuration::supportsS3TC() const
 {

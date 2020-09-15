@@ -948,7 +948,6 @@ static bool js_loadImage(se::State& s)
         se::Value callbackVal = args[1];
         assert(callbackVal.isObject());
         assert(callbackVal.toObject()->isFunction());
-
         return jsb_global_load_image(path, callbackVal);
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);

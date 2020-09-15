@@ -567,6 +567,12 @@
 		294D7D9B1D0E93A2002CE7B7 /* CCDevice-apple.h in Headers */ = {isa = PBXBuildFile; fileRef = 294D7D981D0E93A2002CE7B7 /* CCDevice-apple.h */; };
 		294D7D9C1D0E93A2002CE7B7 /* CCDevice-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 294D7D991D0E93A2002CE7B7 /* CCDevice-apple.mm */; };
 		294D7D9D1D0E93A2002CE7B7 /* CCDevice-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 294D7D991D0E93A2002CE7B7 /* CCDevice-apple.mm */; };
+		3046F6272509DB32001C7D56 /* astc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3046F6252509DB32001C7D56 /* astc.cpp */; };
+		3046F6282509DB32001C7D56 /* astc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3046F6252509DB32001C7D56 /* astc.cpp */; };
+		3046F62C2509DB7E001C7D56 /* astc.h in Headers */ = {isa = PBXBuildFile; fileRef = 3046F62B2509DB7E001C7D56 /* astc.h */; };
+		3046F62D2509DB7E001C7D56 /* astc.h in Headers */ = {isa = PBXBuildFile; fileRef = 3046F62B2509DB7E001C7D56 /* astc.h */; };
+		30AB5AE4250A7C0D00202167 /* etc2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30AB5AE3250A7C0D00202167 /* etc2.cpp */; };
+		30AB5AE5250A7C0D00202167 /* etc2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30AB5AE3250A7C0D00202167 /* etc2.cpp */; };
 		4008729420CE20C2002EB77B /* jsb_cocos2dx_network_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4008729220CE20C2002EB77B /* jsb_cocos2dx_network_manual.cpp */; };
 		4008729520CE20C2002EB77B /* jsb_cocos2dx_network_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4008729220CE20C2002EB77B /* jsb_cocos2dx_network_manual.cpp */; };
 		4008729620CE20C2002EB77B /* jsb_cocos2dx_network_manual.h in Headers */ = {isa = PBXBuildFile; fileRef = 4008729320CE20C2002EB77B /* jsb_cocos2dx_network_manual.h */; };
@@ -1468,6 +1474,10 @@
 		1ACF6A3B1E4AFDC80033C137 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../external/ios/libs/libssl.a; sourceTree = "<group>"; };
 		294D7D981D0E93A2002CE7B7 /* CCDevice-apple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCDevice-apple.h"; sourceTree = "<group>"; };
 		294D7D991D0E93A2002CE7B7 /* CCDevice-apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CCDevice-apple.mm"; sourceTree = "<group>"; };
+		3046F6252509DB32001C7D56 /* astc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = astc.cpp; sourceTree = "<group>"; };
+		3046F62B2509DB7E001C7D56 /* astc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = astc.h; sourceTree = "<group>"; };
+		30AB5AE2250A7BFA00202167 /* etc2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = etc2.h; sourceTree = "<group>"; };
+		30AB5AE3250A7C0D00202167 /* etc2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = etc2.cpp; sourceTree = "<group>"; };
 		4008729220CE20C2002EB77B /* jsb_cocos2dx_network_manual.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jsb_cocos2dx_network_manual.cpp; sourceTree = "<group>"; };
 		4008729320CE20C2002EB77B /* jsb_cocos2dx_network_manual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsb_cocos2dx_network_manual.h; sourceTree = "<group>"; };
 		4037F5CA2108751E001C205C /* CCAsyncTaskPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAsyncTaskPool.h; sourceTree = "<group>"; };
@@ -2825,12 +2835,16 @@
 				46FDDB41202ADDCE00931238 /* etc1.cpp */,
 				46FDDAFB202ADDCE00931238 /* etc1.h */,
 				46FDDB16202ADDCE00931238 /* pvr.cpp */,
+				30AB5AE2250A7BFA00202167 /* etc2.h */,
+				30AB5AE3250A7C0D00202167 /* etc2.cpp */,
 				46FDDAEB202ADDCE00931238 /* pvr.h */,
 				46FDDB0E202ADDCE00931238 /* TGAlib.cpp */,
 				46FDDB33202ADDCE00931238 /* TGAlib.h */,
 				46FDDB1F202ADDCE00931238 /* uthash.h */,
 				46FDDAEE202ADDCE00931238 /* utlist.h */,
 				46FDDAFC202ADDCE00931238 /* ZipUtils.cpp */,
+				3046F6252509DB32001C7D56 /* astc.cpp */,
+				3046F62B2509DB7E001C7D56 /* astc.h */,
 				46FDDB2A202ADDCE00931238 /* ZipUtils.h */,
 			);
 			name = base;
@@ -3091,6 +3105,7 @@
 				1A28FF751F20AFAB007A1D9D /* SRHTTPConnectMessage.h in Headers */,
 				46FDDADF202ACC6A00931238 /* RenderTarget.h in Headers */,
 				4617862920522469008256E1 /* Uri.h in Headers */,
+				3046F62C2509DB7E001C7D56 /* astc.h in Headers */,
 				469303902046AE05004A3D6C /* MappingUtils.hpp in Headers */,
 				4645C4AD22D830DF0034E29B /* EJConvert.h in Headers */,
 				1AAAC8F5205CB6E9005321B9 /* Export.h in Headers */,
@@ -3595,6 +3610,7 @@
 				046E06772185B42500B24E2D /* DragonBones.h in Headers */,
 				046E06C82185B49F00B24E2D /* DisplayData.h in Headers */,
 				46D310B722AF5901001D4590 /* inspector_agent.h in Headers */,
+				3046F62D2509DB7E001C7D56 /* astc.h in Headers */,
 				0430125821DCF2B80007084D /* Bone.h in Headers */,
 				50ABBD4F1925AB0000A911A9 /* MathUtil.h in Headers */,
 				1A28FF561F20AFAB007A1D9D /* SRIOConsumerPool.h in Headers */,
@@ -3845,6 +3861,7 @@
 				046E065A2185B41B00B24E2D /* DeformVertices.cpp in Sources */,
 				1A28FF8F1F20AFAB007A1D9D /* NSRunLoop+SRWebSocket.m in Sources */,
 				ED3057801BEC76C90083C3ED /* ioapi.cpp in Sources */,
+				30AB5AE4250A7C0D00202167 /* etc2.cpp in Sources */,
 				0430122721DCF2B80007084D /* PathConstraint.c in Sources */,
 				1A52DB26205BCD9200350EE3 /* Utils.cpp in Sources */,
 				4645C4B922D830DF0034E29B /* EJConvert.m in Sources */,
@@ -3881,6 +3898,7 @@
 				046E03F321804E6B00B24E2D /* spine-cocos2dx.cpp in Sources */,
 				46FDDAC5202ACC6A00931238 /* RenderTarget.cpp in Sources */,
 				50ABBD3C1925AB0000A911A9 /* CCGeometry.cpp in Sources */,
+				3046F6272509DB32001C7D56 /* astc.cpp in Sources */,
 				1A28FF771F20AFAB007A1D9D /* SRHTTPConnectMessage.m in Sources */,
 				46FDDB99202ADDCE00931238 /* ccUTF8.cpp in Sources */,
 				4617862F20522469008256E1 /* HttpClient-apple.mm in Sources */,
@@ -4020,6 +4038,7 @@
 				46E26C84229BC870006DC27A /* ScriptEngine.cpp in Sources */,
 				0430122821DCF2B80007084D /* PathConstraint.c in Sources */,
 				046E06892185B44A00B24E2D /* BaseFactory.cpp in Sources */,
+				30AB5AE5250A7C0D00202167 /* etc2.cpp in Sources */,
 				1A28FF801F20AFAB007A1D9D /* SRMutex.m in Sources */,
 				046E06FE2189999600B24E2D /* jsb_cocos2dx_editor_support_auto.cpp in Sources */,
 				46FDDC69202D733800931238 /* CCApplication-ios.mm in Sources */,
@@ -4151,6 +4170,7 @@
 				4693042D2046AE06004A3D6C /* jsb_renderer_manual.cpp in Sources */,
 				1AAAC8E8205CB6E9005321B9 /* AudioEngine-inl.mm in Sources */,
 				0430123C21DCF2B80007084D /* PathConstraintData.c in Sources */,
+				3046F6282509DB32001C7D56 /* astc.cpp in Sources */,
 				4617862220522469008256E1 /* HttpCookie.cpp in Sources */,
 				46FDDAE2202ACC6A00931238 /* GFXUtils.cpp in Sources */,
 				4645C4C422D830DF0034E29B /* PlatformUtils.mm in Sources */,

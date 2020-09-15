@@ -140,6 +140,8 @@
         "cocos/base/ccUtils.h", 
         "cocos/base/csscolorparser.cpp", 
         "cocos/base/csscolorparser.hpp", 
+        "cocos/base/astc.cpp",
+        "cocos/base/astc.h",
         "cocos/base/etc1.cpp", 
         "cocos/base/etc1.h", 
         "cocos/base/pvr.cpp", 
