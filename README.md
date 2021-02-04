@@ -18,9 +18,11 @@
 测试用的 astc 资源：http://www.codefriends.cn:3389/uuid.astc ，测试项目为编辑器构建的 helloworld 项目。
 调试 jsb_global.cpp 的 js_loadImage 可以看到加载的 path 路径为 .astc 后缀，成功运行后，xcode 无任何报错。
 
-参考：https://github.com/cocos-creator/cocos2d-x-lite/issues
+参考：
 https://github.com/cocos-creator-packages/jsb-adapter/pull/313
 https://github.com/cocos-creator/engine/pull/6918
+https://github.com/cocos-creator/engine-native/pull/2633
+
 
 https://github.com/cocos-creator/engine/pull/3039
 https://github.com/cocos-creator/cocos2d-x-lite/pull/1685
